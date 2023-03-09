@@ -7,8 +7,8 @@ Feature: # Enter feature name here
     When Verify User successfully landed on home page
     Then User moved to and clicked resources option
     Then Verify User landed on Dummy Registration Page
-    Then User fill "<name>" in Dummy Registration form
+    Then User fill "<name>" "<phone>" "<email>" "<country>" "<city>" "<username>" <password> in Dummy Registration form
     Examples:
-      | name   |
-      | Keshav |
+      | name   | phone      | email         | country | city  | username | password |
+      | Keshav | 9234565456 | rony@asdf.com | India   | Delhi | username | password |
 

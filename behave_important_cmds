@@ -95,6 +95,8 @@ Hooks :
  installing behave via github repo :
  pip install git+https://github.com/behave/behave
 
+ Intendation :- ctrl + alt + L in .feature file
+
 -----------------------------------------------------------------behave and allure report together--------------------------------------------------------------------------------
 - install allure behave : pip install allure-behave
 - cmd command to run allure report with behave results :

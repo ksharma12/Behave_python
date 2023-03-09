@@ -1,5 +1,7 @@
 import configparser
 import logging
+import os
+
 from selenium.webdriver import ActionChains
 import traceback
 
@@ -15,14 +17,23 @@ log = Logger(__name__, logging.INFO)
 
 class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations):
 
-    def __init__(self, driver):
+    def __init__(self, filepath, section, driver):
         self.driver = driver
+        self.filepath = filepath
+        self.section = section
         Common_Operations.__init__(self, self.driver)
-        Waits_Operations.__init__(self, self.driver)
+        Waits_Operations.__init__(self, self.filepath, self.section, self.driver)
         Driver_Operations.__init__(self, self.driver)
         self.actions = ActionChains(self.driver)
 
-    _confi_file_path = "../conf.ini"
+    def get_val(self, section, key):
+        this_folder = os.path.dirname(os.path.abspath(__file__))
+        init_file = os.path.join(this_folder, self.filepath)
+        config = configparser.RawConfigParser()
+        res = config.read(init_file)
+        return config.get(section, key)
+
+    # _confi_file_path = "../conf.ini"
     _js_arg_ele_border_color = "red"
     _selectors_dict = {
         "XPATH": By.XPATH,
@@ -74,10 +85,10 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
 
     # WebElement Operations
     # This function return web element
-    def find_element(self, locator_sig, locator):
+    def find_element(self, locator):
         try:
-            web_element = self.driver.find_element(locator_sig,
-                                                   locator)
+            web_element = self.driver.find_element(self.get_locator_signature(locator),
+                                    self.get_val(self.section, locator))
             self.highlight_element(web_element)
             log.logger.info(f"{web_element} in focus now")
             print(f"{web_element} in focus now")
@@ -87,10 +98,9 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function return list of web elements
-    def find_elements(self, locator):
+    def find_elements(self, locator_sig, locator):
         try:
-            web_elements = self.driver.find_elements(self.get_locator_signature(locator),
-                                                     locator)
+            web_elements = self.driver.find_elements(locator_sig, locator)
             self.highlight_element(web_elements)
             log.logger.info(f"{web_elements} in focus now")
             print(f"{web_elements} in focus now")
@@ -100,10 +110,11 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function click on web element
-    def click(self, locator_sig, locator):
+    def click(self, locator):
         flag = False
         try:
-            ele = self.find_element(locator_sig, locator)
+            ele = self.find_element(self.get_locator_signature(locator),
+                                    self.get_val(self.section, locator))
             self.highlight_element(ele)
             ele.click()
             flag = True
@@ -118,7 +129,7 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
     def click_js(self, locator_sig, locator):
         flag = False
         try:
-            ele = self.find_element(locator,locator_sig)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             self.execute_js_script("arguments[0].click();", ele)
             flag = True
@@ -133,7 +144,7 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
     def click_action(self, locator_sig, locator):
         flag = False
         try:
-            ele = self.find_element(locator, locator_sig)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             print("clicked successfully via action class")
             log.logger.info(f"{ele} clicked successfully via js script")
@@ -145,10 +156,10 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function select dropdown/checkbox/radio_btn by value
-    def select_by_value(self, locator_sig, locator, value):
+    def select_by_value(self, locator, value):
         flag = False
         try:
-            dropdown_ele = self.find_element(locator_sig, locator)
+            dropdown_ele = self.find_element(locator)
             select = Select(dropdown_ele)
             self.highlight_element(dropdown_ele)
             select.select_by_value(value=value)
@@ -241,10 +252,10 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
         return flag
 
     # This function deselect all options in dropdown/checkbox/radio_btn
-    def deselect_all_options(self, locator):
+    def deselect_all_options(self, locator_sig, locator):
         flag = False
         try:
-            dropdown_ele = self.find_element(locator)
+            dropdown_ele = self.find_element(locator_sig, locator)
             self.highlight_element(dropdown_ele)
             select = Select(dropdown_ele)
             select.deselect_all()
@@ -257,9 +268,9 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
         return flag
 
     # This function get element text
-    def get_element_text(self, locator):
+    def get_element_text(self, locator_sig, locator):
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             ele_text = ele.text
             log.logger.info(f"{ele} element text is {ele_text}")
@@ -273,7 +284,8 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
     def send_keys(self, locator, send_keys_value):
         flag = False
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(self.get_locator_signature(locator),
+                                    self.get_val(self.section, locator))
             self.highlight_element(ele)
             ele.send_keys(send_keys_value)
             log.logger.info(f"{ele} element input value is {send_keys_value}")
@@ -285,9 +297,9 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
         return flag
 
     # This function get web element css property
-    def get_element_value_of_css_property(self, locator, css_property_name):
+    def get_element_value_of_css_property(self, locator_sig, locator, css_property_name):
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             ele_css_property_value = ele.value_of_css_property(css_property_name)
             log.logger.info(f"{ele} element css property values is {ele_css_property_value}")
@@ -298,9 +310,9 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function get web element size
-    def get_element_size(self, locator):
+    def get_element_size(self, locator_sig, locator):
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             ele_size = ele.size
             log.logger.info(f"{ele} element size is {str(ele_size)} and there items are {ele_size.items()}")
@@ -311,9 +323,9 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function get web element attribute
-    def get_element_attribute(self, locator, attribute_name):
+    def get_element_attribute(self, locator_sig, locator, attribute_name):
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             ele_attribute = ele.get_attribute(name=attribute_name)
             log.logger.info(f"{ele} element attribute is {str(ele_attribute)}")
@@ -324,9 +336,9 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function get web element location
-    def get_element_location(self, locator):
+    def get_element_location(self, locator_sig, locator):
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             ele_location = ele.location
             log.logger.info(f"{ele} element location is {str(ele_location)} and there items are {ele_location.items()}")
@@ -337,9 +349,9 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function get web element tag name
-    def get_element_tag_name(self, locator):
+    def get_element_tag_name(self, locator_sig, locator):
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             ele_tag_name = ele.tag_name
             log.logger.info(f"{ele} element tagname is {str(ele_tag_name)}")
@@ -350,10 +362,10 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # The submit() function is applicable only for <form> and makes handling of form easier
-    def submit(self, locator):
+    def submit(self, locator_sig, locator):
         flag = False
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             # print(f"element tagname is {str(ele.tag_name)}")
             # log.logger.info(f"{ele} element tagname is {str(ele_tag_name)}")
@@ -365,9 +377,9 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
         return flag
 
     # The submit() function is applicable only for <form> and makes handling of form easier
-    def get_element_accessible_name(self, locator):
+    def get_element_accessible_name(self, locator_sig, locator):
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             ele_accessible_name = ele.accessible_name
             log.logger.info(f"{ele} element accessible name is {ele_accessible_name}")
@@ -378,10 +390,10 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function clear input field
-    def clear(self, locator):
+    def clear(self, locator_sig, locator):
         flag = False
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             ele.clear()
             log.logger.info(f"{ele} element cleared")
@@ -393,10 +405,10 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
         return flag
 
     # This function return true if element is selected
-    def check_element_is_selected(self, locator):
+    def check_element_is_selected(self, locator_sig, locator):
         flag = False
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             ele_selected = ele.is_selected()
             if ele_selected:
@@ -411,9 +423,9 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function return true if element is enabled
-    def check_element_is_enabled(self, locator):
+    def check_element_is_enabled(self, locator_sig, locator):
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             ele_enabled = ele.is_enabled()
             if ele_enabled:
@@ -428,9 +440,9 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function return true if element is displayed
-    def check_element_is_displayed(self, locator):
+    def check_element_is_displayed(self, locator_sig, locator):
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             ele_displayed = ele.is_displayed()
             if ele_displayed:
@@ -445,9 +457,9 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function return aria role of the element
-    def get_element_aria_rol(self, locator):
+    def get_element_aria_rol(self, locator_sig, locator):
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             ele_aria_role = ele.aria_role
             log.logger.info(f"{ele} element aria role is {ele_aria_role}")
@@ -458,9 +470,9 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function return dom attribute
-    def get_element_inside_dom_attribute(self, locator, dom_attribute_name):
+    def get_element_inside_dom_attribute(self, locator_sig, locator, dom_attribute_name):
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             ele_get_dom_attribute = ele.get_dom_attribute(name=dom_attribute_name)
             log.logger.info(f"element tagname is {str(ele_get_dom_attribute)}")
@@ -471,9 +483,9 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function return element property
-    def get_element_property(self, locator, property_name):
+    def get_element_property(self, locator_sig, locator, property_name):
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             ele_get_property = ele.get_property(property_name)
             log.logger.info(f"element property is {ele_get_property}")
@@ -484,9 +496,9 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function return element location via scroll into view
-    def get_element_location_via_scroll_into_view(self, locator):
+    def get_element_location_via_scroll_into_view(self, locator_sig, locator):
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             ele_location_once_scrolled_into_view = ele.location_once_scrolled_into_view
             log.logger.info(f"{ele} element location when scrolled into view is {ele_location_once_scrolled_into_view}")
@@ -497,9 +509,9 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function return element size and location
-    def get_element_size_and_location(self, locator):
+    def get_element_size_and_location(self, locator_sig, locator):
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             ele_rect = ele.rect
             log.logger.info(f"{ele} element rect is {ele_rect}")
@@ -510,9 +522,9 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function return element shadow root inside element
-    def get_shadow_root_inside_element(self, locator):
+    def get_shadow_root_inside_element(self, locator_sig, locator):
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             ele_shadow_root = ele.shadow_root
             log.logger.info(f"{ele} element shadow root returned")
@@ -523,9 +535,9 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function return screenshot of element as base64
-    def get_element_screenshot_as_base64(self, locator):
+    def get_element_screenshot_as_base64(self, locator_sig, locator):
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             ele_screenshot_as_base64 = ele.screenshot_as_base64
             log.logger.info(f"{ele} element screenshot as base64 taken")
@@ -536,9 +548,9 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function return screenshot of element as png
-    def get_element_screenshot_as_png(self, locator):
+    def get_element_screenshot_as_png(self, locator_sig, locator):
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             ele_screenshot_as_png = ele.screenshot_as_png
             log.logger.info(f"{ele} element screenshot as png taken")
@@ -549,9 +561,10 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function moved focus/curser to ele
-    def move_to_element(self, locator_sig, locator):
+    def move_to_element(self, locator):
         try:
-            ele = self.find_element(locator_sig, locator)
+            ele = self.find_element(self.get_locator_signature(locator),
+                                    self.get_val(self.section, locator))
             self.highlight_element(ele)
             self.actions.move_to_element(to_element=ele)
             log.logger.info(f"{ele} moved to element")
@@ -562,9 +575,9 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function moved focus/curser to ele via js script
-    def move_to_element_js(self, locator):
+    def move_to_element_js(self, locator_sig, locator):
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             move_to_ele_script = "if(document.createEvent){var evObj = document.createEvent('MouseEvents');evObj.initEvent('mouseover',true, false); arguments[0].dispatchEvent(evObj);} else if(document.createEventObject) { arguments[0].fireEvent('onmouseover');}"
             self.driver.execute_script(move_to_ele_script, ele)
@@ -598,9 +611,9 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function scrolled to required ele
-    def scroll_to_element(self, locator):
+    def scroll_to_element(self, locator_sig, locator):
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             self.actions.scroll_to_element(ele)
             log.logger.info(f"{ele} actions scrolled to successfully")
@@ -622,9 +635,9 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function right-clicked on ele
-    def right_click(self, locator):
+    def right_click(self, locator_sig, locator):
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             self.actions.context_click(on_element=ele)
             log.logger.info(f"{ele} actions right clicked")
@@ -650,9 +663,9 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function drag source ele and drop via offset
-    def drag_and_drop_element_via_offset(self, source_locator, x_offset, y_offset):
+    def drag_and_drop_element_via_offset(self, source_locator_sig, source_locator, x_offset, y_offset):
         try:
-            source_ele = self.find_element(source_locator)
+            source_ele = self.find_element(source_locator_sig, source_locator)
             self.highlight_element(source_ele)
             self.actions.drag_and_drop_by_offset(source=source_ele, xoffset=x_offset, yoffset=y_offset)
             log.logger.info(f"{source_ele} drag and dropped to x_axis {x_offset} and y_axis {y_offset}")
@@ -663,9 +676,9 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function click and hold on ele
-    def click_and_hold(self, locator):
+    def click_and_hold(self, locator_sig, locator):
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             self.actions.click_and_hold(on_element=ele)
             log.logger.info(f"{ele} clicked and hold")
@@ -676,9 +689,9 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function double click on ele
-    def double_click(self, locator):
+    def double_click(self, locator_sig, locator):
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             self.actions.double_click(on_element=ele)
             log.logger.info(f"{ele} double clicked")
@@ -689,9 +702,9 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function perform release
-    def release(self, locator):
+    def release(self, locator_sig, locator):
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             self.actions.release(on_element=ele)
             log.logger.info(f"{ele} released on ele")
@@ -702,9 +715,9 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function perform key down action
-    def key_down(self, locator, value):
+    def key_down(self, locator_sig, locator, value):
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             self.actions.key_down(value=value, element=ele)
             log.logger.info(f"{ele} key down action performed")
@@ -715,9 +728,9 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function perform key up action
-    def key_up(self, locator, value):
+    def key_up(self, locator_sig, locator, value):
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             self.actions.key_up(value=value, element=ele)
             log.logger.info(f"{ele} key up action performed")
@@ -739,9 +752,9 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function scrolled to origin at x_axis and y_axis
-    def scroll_to_origin(self, locator, delta_x, delta_y):
+    def scroll_to_origin(self, locator_sig, locator, delta_x, delta_y):
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             self.actions.scroll_from_origin(scroll_origin=ele, delta_x=delta_x, delta_y=delta_y)
             log.logger.info(f"{ele} scrolled to origin at {delta_x} and {delta_y}")
@@ -752,9 +765,9 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function send keys to element via action
-    def send_keys_to_element_via_action(self, locator, keys_to_send):
+    def send_keys_to_element_via_action(self, locator_sig, locator, keys_to_send):
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             self.highlight_element(ele)
             self.actions.send_keys_to_element(ele, keys_to_send)
             log.logger.info(f"{ele} {keys_to_send} keys send successfully")
@@ -765,9 +778,9 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             assert False
 
     # This function return element id
-    def get_element_id(self, locator):
+    def get_element_id(self, locator_sig, locator):
         try:
-            ele = self.find_element(locator)
+            ele = self.find_element(locator_sig, locator)
             ele_id = ele.id
             log.logger.info(f"{ele} element id is {ele_id}")
             print(f"{ele} element id is {ele_id}")
