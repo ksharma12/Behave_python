@@ -1,0 +1,359 @@
+---------------------------------------------------------------------------conftest.py--------------------------------------------------------------------------------------------------
+Your conftest.py is only available to test files in the same directory, or in nested directories below.
+   tests/
+    ├── conftest.py # Applies to all tests
+    └── A/
+        ├── conftest.py # Applies only to tests in this module/folder (i.e. A).
+        ├── test_a.py
+    └── B/
+        ├── conftest.py # Applies only to tests in this module/folder (i.e. B).
+        ├── test_b.py
+
+conf.ini file ::--- read multiple .ini files data together
+https://stackoverflow.com/questions/4029946/multiple-configuration-files-with-python-configparser
+
+NO Section Error for configparser arrise only due to config.ini file path
+
+pip install -U selenium  ---> update selenium
+
+pip install --upgrade pip -----> update pip
+
+Which python3 ------> which version of python installed
+
+Python3 ------> shifting to python interpreter
+
+software-update --install-rosetta ------> Cause: error=86, Bad CPU type in executable error message.
+
+Ctrl + options/alt + i ------> auto indentation in pycharm
+
+Ctrl + options/alt + o ------> optimize imports
+
+chrome://version/ ---------> type in chrome address bar (for chrome profile data)
+
+pycharm_icon -> preferences -> current_project -> python_interpreter -> (+)sign ->
+
+pytest -> install
+
+ctr + alt + s  => settings in pycharm
+
+python -m pip check-----------------> check for missing dependencies
+pip freeze > requirements.txt ------------> pip freeze outputs a list of all installed Python modules with their versions.
+pip install -r requirements.txt -----------> This installs all of the modules listed in our Python requirements file into our project environment.
+pip uninstall -r requirements.txt -----------> This uninstalls all of the modules listed in our Python requirements file into our project environment.
+pip install -U -r requirements.txt ---------> This upgrade all of the modules listed in our Python requirements file into our project environment.
+command + shift + f ---------------> search whole project for search "string"
+pip list --outdated -------------> Step 1: Output a list of outdated packages
+pip install -U PackageName-------->  Step 2: Upgrade the required package
+pip install pipreqs --------------> it is a good practice to use the pipreqs module. It is used to scan your imports and build a Python requirements file for you.
+command + ~  ---------------------> clear terminal
+
+
+move parent directory : cd ..
+
+move child directory : cd name
+
+# . represents current directory in which we are working
+filename="./Logs/logfile.log"
+filepath="../testData/Test_Data.xlsx"
+
+shadow element eg ---> url = "https://www.w3schools.com/html/tryit.asp?filename=tryhtml_form_submit"
+
+selenium grid is for Remote execution of test cases not parallel execution although parallel execution
+is possible via selenium grid
+
+- distribute testcases on remote machine
+- selenium hub file download from : https://www.selenium.dev/documentation/grid/
+
+1. check if java configured on your machine :
+  - java -version
+
+2. How to download java on your machine :
+  -
+
+----------------------------------------PyTest---------------------------------------------------------------
+pytest documentation ::-->> [https://docs.pytest.org/en/7.2.x/]
+https://www.youtube.com/watch?v=snDSB9b8v_E - pytest tutorial
+
+Likewise, you can have other conftest.py files in subdirectories of the top tests directory.
+If you do, fixtures defined in these lower-level conftest.py files will be available to tests in that directory and subdirectories.
+So far, however, the fixtures in the Tasks project are intended ...
+
+To add any package to current project :
+    preferences -> current_project -> python_interpreter -> (+)sign -> package_name
+
+pycharm_icon -> preferences -> current_project -> python_interpreter -> (+)sign -> pytest -> install
+
+mandatory_rule for pytest:->
+1. In pytest framework always make python file as (test_......)
+2. function name will always start from (test_.....)
+
+how to execute test cases in pytest:
+ ->pytest cmnd execute all files in pytest project named test_....
+1. make terminal point to pytest project via cd (pytest_Dir) -> [pytest]
+2. run specific file in terminal: [pytest fileName.py]
+3. if need to run test in console then in terminal: [pytest fileName.py -s]
+4. if need to run test in console with all verbose(info) then in terminal: [pytest fileName.py -s -v]
+   ex: fileName.py::testCase1 (print_item)
+       PASSED
+       fileName.py::testCase2 (print_item)
+       PASSED
+5. if run single test in a file: [pytest fileName.py -s -v -k testName(remove test_)] # test_testName
+6. if run all test in a file except 1 testName:
+   [pytest fileName.py -s -v -k "not testName"(remove test_)] # test_testName
+7. Creating a test_runner:
+   editconfigurations -> (+)button -> pytest ->
+     scriptpath -> /pytest_directory
+     workingDirectory -> /pytest_directory
+   option [pytest in pytest_directory] , click on play button
+
+   preferences -> tools -> python Integrated tools -> testing -> defaultTestRunner
+
+8. Creating test fixtures: in [test_fileName.py] -> function-level and module-level
+   function-level:---->
+   predefined Name:  def setup_function(function) # execute before every test
+   predefined Name:  def teardown_function(function) # execute after every test
+
+   module-level:---->
+   predefined Name:  def setup_module(module) # execute before every test
+   predefined Name:  def teardown_module(module) # execute after every test
+
+9. User defined markers run particular marker tests (grouping testcases)
+   [pytest fileName.py -s -v -m marker_name]
+   [pytest fileName.py -s -v -m "not marker_name"]
+
+   Register markers for No warnings:
+   project_dir -> create .ini file -> paste markers
+
+10. function stopped execution once assertion failed
+   -to continue with function execution use soft_assertion
+    [pip install pytest-soft-assertions]
+   -run test via this command:
+    [pytest fileName.py -s -v --soft-asserts]
+
+11. test_1 , test_2 , test_3(data_set_1) , test_3(data_set_2) , test_4(data_set_3) => total [5] tests would run
+
+12. For parallel test execution
+    https://pypi.org/project/pytest-xdist/
+    pip install pytest-xdist
+    [pytest -n auto] # With this call, pytest will spawn a number of workers processes equal to the
+                       number of available CPUs, and distribute the tests randomly across them.
+
+    execution command: [pytest -n auto]    # run all tests in all files in framework parallely
+                       [pytest -s -v -n auto]
+
+                       [pytest fileName.py -n auto ]  # run all tests in named file parallely
+                       [pytest fileName.py -s -v -n auto ]
+
+                       [pytest fileName.py -n i] # (i=integer)
+                       [pytest fileName.py -s -v -n 3]
+
+    configure: in pytest.ini file
+               addopts = -ni(i=integer)
+                         -n auto
+
+13. For Html reports generation
+    https://pypi.org/project/pytest-html/
+    pip install pytest-html
+
+    [pytest --html=test_reports.html]
+    [pytest -s -v --html=test_reports.html]
+    [pytest --html="./folder_name/test_reports.html"]
+    [pytest -s -v --html="./folder_name/test_reports.html"]
+
+    [pytest fileName.py --html=test_reports.html]
+    [pytest fileName.py -s -v --html=test_reports.html]
+    [pytest fileName.py --html="./folder_name/test_reports.html"]
+    [pytest fileName.py -s -v --html="./folder_name/test_reports.html"]
+
+14. For allure reports
+    {configure allure report globally}
+    download allure command-line : https://docs.qameta.io/allure/
+    move to option: Installing a commandline
+    type: allure in terminal for info
+
+    install allure package in project :
+     - preferences -> current_project -> python_interpreter -> (+)sign -> allure-pytest
+
+    Steps to generate allure report:->
+     - [pytest --alluredir="./z_allure_reports"]
+       [pytest -s -v --alluredir="./z_allure_reports"]
+       [pytest fileName.py --alluredir="./z_allure_reports"]
+       [pytest fileName.py -s -v --alluredir="./z_allure_reports"]
+                result : multiple json files created inside the folder : z_allure_reports
+
+       ->[allure serve ./z_allure_reports]
+                result : allure report generated in browser
+
+       -> for generating allure reports with all features trends,history,etc
+           allure generate ../Allure_Report  --clean -o ../Allure_Report
+           allure serve path_of_allure-report_folder_generated
+           Note :
+                  Keep environment.xml and executor.json file in folder where all the json files of test_data recite to populate in report
+
+       -> for creating trends and other stuff in allure report :-
+          https://stackoverflow.com/questions/44979176/how-to-show-data-for-launches-environment-trend-and-executors-in-allure-report#:~:text=For%20trends%20and%20other%20graphs%20to%20be%20displayed%2C,cmd%20prompt%20allure%20generate%20path_of_allure-report_folder_generated%20--clean%20-o%20allure-report
+
+    For capturing screenshot on test failure:->
+     - make conftest.py file at root dir and add some code
+     - then add another function
+     - @pytest.mark.usefixtures("log_on_failure") add this to all test cases
+
+15. conftest.py file:  // execution to all testcases for all files
+     - kept common fixtures in the file which act as globally to all tests in the framework
+     - @pytest.fixture(scope="function/module/class/session")
+           session: - remove parallel execution
+                    - code executes only once for all test cases (sequential execution)
+
+------------------------------------------------testcase studio-----------------------------------------------------------------
+https://chrome.google.com/webstore/detail/testcase-studio/loopjjegnlccnhgfehekecpanpmielcj
+TestCase Studio record the user actions performed on a web application in English Sentences.
+TestCase Studio is a platform to record the user actions performed on a web application in English Sentences. This recorder plugin also records screenshots. It will also generate the XPath and Automation Code for every user action. User can save or copy these recorded steps as a Test case.
+Watch this video tutorial to make the best use of TestCase Studio.
+https://www.youtube.com/watch?v=KQ81oE1x6ao
+Very simple steps to use the tool-
+1. Click on the TestCase Studio logo in the tool bar.
+2. It will open the TestCase Studio window.
+3. Now keep performing your steps, it will automatically write english sentence for every user action.
+4. You can download the written steps by clicking on download button.
+
+-------------------------------------------------------git---------------------------------------------------------------------
+git commands :
+git init
+git add README.md
+git commit -m "first commit
+git branch -M main
+git remote add origin https://github.com/vedthemaster/tutorial-yt.git
+git push -u origin main
+
+git clone from specific branch :
+git clone --single-branch --branch <branchname> <remote-repo>
+
+git reset - for un_add all added files before commit
+git reset <file> - for un_add particular file
+
+git stash - save the current working image in a stash list with stash@{number}, number = 1,2,3,4,5...
+git stash apply stash@{number} to apply these changes on local working
+
+git conflicts :
+https://stackoverflow.com/questions/161813/how-do-i-resolve-merge-conflicts-in-a-git-repository
+
+after git conflict resolve :
+https://stackoverflow.com/questions/2474097/how-do-i-finish-the-merge-after-resolving-my-merge-conflicts
+
+name of git branch :
+https://stackoverflow.com/questions/6245570/how-do-i-get-the-current-branch-name-in-git
+
+how to fix github error permission denied :
+https://www.youtube.com/watch?v=dxvnbKaszBw&ab_channel=BiggiDroid
+
+mac ==> command + shift + g (to find .ssh key)
+
+Notepad++ regix :-
+105164 25   >>>>>> 105164_0025
+[ ]([0-9]+) to _$1   --do your first replace
+_([0-9])$ to _000$1
+_([0-9][0-9])$ to _00$1
+_([0-9][0-9][0-9])$ to _0$1
+
+----------------------------------------Jenkins---------------------------------------------------------------
+uninstall jenkins :
+brew uninstall jenkins --force
+brew cleanup
+
+Jenkins 2.346. 3 is the most recent Jenkins LTS. It supports Java 8.
+
+1. Install jenkins .war file from https://www.jenkins.io/download/
+2. Jenkins_2.289.3.war jenkins file version
+3. Open cmd in location where .war file downloaded and then run command : java -jar jenkins.war
+4. Then copy the authentication key and paste it somewhere
+5. Navigate to this for accessing apache localhost server: http://localhost:8080/login?from=%2F
+6. http://localhost:8080/
+7. Login with Jenkins Credentials username/password
+8. Navigate to "Manage Jenkins" > Install some plugins > tab "Available" and search for
+   a. allure
+   b. shinningpanda
+9. cntrl + c to top jenkins
+
+help video : https://www.youtube.com/watch?v=1aXKLIbKOp4&ab_channel=Mukeshotwani
+
+
+for local it is localhost:8080 but instead company would provide us the url like  "jenkins.com.companyName..."
+username
+password
+For Khamilia-softwares
+jenkins key : 85c582c8461748d0ae2b0e0e467bb070
+http://localhost:8080/
+username - keshav
+comminity saved password and notifications
+https://community.jenkins.io/
+
+-------------------------------------way2Automation-----------------------------------------------------
+Way2Automation
+Please find the link to access the enrolled courses:
+http://www.way2automation.com/
+Go to Member Login
+Username: keshavsharma.tu@gmail.com
+Password: Way2Automation
+Go to "My Courses" to see the courses you are enrolled in.
+
+
+-----------------------------------------------Executing allure report using program--------------------------------------------------------------------------------------------
+https://stackoverflow.com/questions/41960081/how-to-send-an-email-of-allure-report
+
+----------------------------------------------------------------------------------APIs-------------------------------------------------------------------------------
+[requests Documentation] -----::>> [https://requests.readthedocs.io/en/latest/]
+
+[view json objects] ---> http://jsonviewer.stack.hu/
+[apis for testing purpose] ---> https://reqres.in/
+[delay apis example] ---> https://httpbin.org/
+[elements of internet] ---> https://the-internet.herokuapp.com/
+
+
+[serialization] :- Object serialization is the process of converting state of an object into byte stream. [object ----> byte]
+[deserialization] :- Deserialization is the process of reconstructing the object from the byte stream. [byte ----> object]
+[cookies] :- Cookies are small pieces of text sent to your browser by a website you visit.
+           They help that website remember information about your visit,
+           which can both make it easier to visit the site again and make the site more useful to you.
+[encoding] :- The Encoding API provides a mechanism for handling text in various character encodings, including legacy non-UTF-8 encodings.
+            The API provides four interfaces: TextDecoder , TextEncoder , TextDecoderStream and TextEncoderStream
+
+[CRUD ]:-
+Create - POST
+Read - GET
+Update - PUT/PATCH
+Delete - DELETE
+
+PUT - Update/Replace
+PATCH - Update/Modify
+
+[In PUT] :- all properties of the object be provided while making request
+we need to pass all the properties while sending put request ,
+if this record exist then  - update/replace
+if this record does not exist then - create user
+{
+  "Name": "Keshav",
+  "Phone": "90909",
+  "Address": "Banglore"
+}
+
+[In PATCH] :- specific property we want to update
+whatever property we want to update we just need to pass that
+{
+  "Address": "Haryana"
+}
+
+[TimeOut] -:
+
+- uses for restricting the api to have response in limited time,
+  ensures the performance of the api within limited given time limit
+
+[Authentication] and [Authorization] :-->
+Authentication :- If we are passing correct required credentials to access the resource.
+Authorization :- If required person is authorized to access that resource via its credentials
+
+# identification ::---->
+Username and a Password
+Authentication tokens
+Secret keys
+Bio-metrics and many other ways
+
