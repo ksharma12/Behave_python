@@ -65,7 +65,7 @@ def step_impl(context, search_text):
 
 @given("User navigated to Landing page")
 def step_impl(context):
-    context.ele_ops = Element_Operations(conf_path, "LOCATOR", context.driver)
+    context.ele_ops = Element_Operations("LOCATORS", context.driver)
     context.ele_ops.get_url(str(test_site_url))
 
 
@@ -76,9 +76,9 @@ def step_impl(context):
 
 @then("User moved to and clicked resources option")
 def step_impl(context):
-    context.ele_ops = Element_Operations(conf_path, "LOCATORS", context.driver)
+    context.ele_ops = Element_Operations("LOCATORS", context.driver)
     context.ele_ops.wait_until_element_present_visible("resources__XPATH")
-    # context.ele_ops.move_to_element("resources__XPATH").perform_after_actionChains()
+    context.ele_ops.move_to_element("resources__XPATH").perform_after_actionChains()
     # context.ele_ops.click("resources_practice_site_1__XPATH")
 
 
@@ -89,9 +89,8 @@ def step_impl(context):
 
 @then('User fill "{name}" "{phone}" "{email}" "{country}" "{city}" "{username}" {password} in Dummy Registration form')
 def step_impl(context, name, phone, email, country, city, username, password):
-    pass
-    # context.ele_ops = Element_Operations("./steps/conf.ini", "LOCATORS", context.driver)
-    #
+    context.ele_ops = Element_Operations("LOCATORS", context.driver)
+
     # context.ele_ops.wait_until_element_present_visible("name__XPATH")
     # context.ele_ops.send_keys("name__XPATH", name)
     #

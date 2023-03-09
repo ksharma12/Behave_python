@@ -17,18 +17,17 @@ log = Logger(__name__, logging.INFO)
 
 class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations):
 
-    def __init__(self, filepath, section, driver):
+    def __init__(self, section, driver):
         self.driver = driver
-        self.filepath = filepath
         self.section = section
         Common_Operations.__init__(self, self.driver)
-        Waits_Operations.__init__(self, self.filepath, self.section, self.driver)
+        Waits_Operations.__init__(self, self.section, self.driver)
         Driver_Operations.__init__(self, self.driver)
         self.actions = ActionChains(self.driver)
 
     def get_val(self, section, key):
         this_folder = os.path.dirname(os.path.abspath(__file__))
-        init_file = os.path.join(this_folder, self.filepath)
+        init_file = os.path.join(this_folder, "../conf.ini")
         config = configparser.RawConfigParser()
         res = config.read(init_file)
         return config.get(section, key)
@@ -87,8 +86,8 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
     # This function return web element
     def find_element(self, locator):
         try:
-            web_element = self.driver.find_element(self.get_locator_signature(locator),
-                                    self.get_val(self.section, locator))
+            web_element = self.driver.find_element((self.get_locator_signature(locator),
+                                                    self.get_val(self.section, locator)))
             self.highlight_element(web_element)
             log.logger.info(f"{web_element} in focus now")
             print(f"{web_element} in focus now")
@@ -564,7 +563,7 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
     def move_to_element(self, locator):
         try:
             ele = self.find_element(self.get_locator_signature(locator),
-                                    self.get_val(self.section, locator))
+                                     self.get_val(self.section, locator))
             self.highlight_element(ele)
             self.actions.move_to_element(to_element=ele)
             log.logger.info(f"{ele} moved to element")

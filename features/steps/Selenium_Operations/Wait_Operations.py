@@ -21,9 +21,8 @@ class Waits_Operations:
         "PARTIAL_LINK_TEXT": By.PARTIAL_LINK_TEXT
     }
 
-    def __init__(self, filepath, section, driver):
+    def __init__(self, section, driver):
         self.driver = driver
-        self.filepath = filepath
         self.section = section
         # self.explicit_wait = int(self.get_value("../conf.ini", "BASIC_CONFIGS", "explicit_wait"))
         # self.fluent_wait = float(self.get_value("../conf.ini", "BASIC_CONFIGS", "fluent_wait"))
@@ -39,7 +38,7 @@ class Waits_Operations:
 
     def get_val(self, section, key):
         this_folder = os.path.dirname(os.path.abspath(__file__))
-        init_file = os.path.join(this_folder, self.filepath)
+        init_file = os.path.join(this_folder, "../conf.ini")
         config = configparser.RawConfigParser()
         res = config.read(init_file)
         return config.get(section, key)
