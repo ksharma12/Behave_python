@@ -22,48 +22,10 @@ implicit_wait = config.get('BASIC_CONFIGS', 'implicit_wait')
 test_site_url = config.get('BASIC_CONFIGS', 'test_site_url')
 
 
-@given("I navigate to google.com")
-def step_impl(context):
-    """
-    :type context: behave.runner.Context
-    """
-    context.driver.get("https://www.google.com/")
-    print("I navigate to google.com")
-
-
-@when("I Validate the Page title")
-def step_impl(context):
-    """
-    :type context: behave.runner.Context
-    """
-    title = context.driver.title
-    assert title == "Google"
-    print(title)
-    print("I Validate the Page title")
-
-
-@step("I click the search button")
-def step_impl(context):
-    """
-    :type context: behave.runner.Context
-    """
-    context.driver.find_element(By.NAME, "q").send_keys(Keys.ENTER)
-    print("And I click the search button")
-
-
-@then('I enter the text as "{search_text}"')
-def step_impl(context, search_text):
-    """
-    :type context: behave.runner.Context
-    """
-    context.driver.find_element(By.NAME, "q").send_keys(search_text)
-    print(f"The entered text is {search_text}")
-
-
 @given("User navigated to Landing page")
 def step_impl(context):
     context.ele_ops = Element_Operations("LOCATORS", context.driver)
-    context.ele_ops.get_url("https://www.way2automation.com/")
+    context.ele_ops.get_url(test_site_url)
 
 
 @when("Verify User successfully landed on home page")

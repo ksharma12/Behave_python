@@ -12,7 +12,7 @@ Your conftest.py is only available to test files in the same directory, or in ne
 conf.ini file ::--- read multiple .ini files data together
 https://stackoverflow.com/questions/4029946/multiple-configuration-files-with-python-configparser
 
-NO Section Error for configparser arrise only due to config.ini file path
+NO Section Error for configparser arise only due to config.ini file path
 
 pip install -U selenium  ---> update selenium
 

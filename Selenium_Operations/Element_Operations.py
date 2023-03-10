@@ -100,7 +100,6 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
         try:
             web_elements = self.driver.find_elements(self.get_locator_signature(locator),
                                                      self.get_val(self.section, locator))
-            self.highlight_element(web_elements)
             log.logger.info(f"{web_elements} in focus now")
             print(f"{web_elements} in focus now")
             return web_elements
@@ -115,6 +114,23 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             ele = self.find_element(locator)
             self.highlight_element(ele)
             ele.click()
+            flag = True
+            log.logger.info(f"{ele} clicked successfully")
+            print(f"{ele} clicked successfully")
+        except:
+            print(traceback.print_exc())
+            assert False
+        return flag
+
+    def click_from_multiple_ele_text_basis(self, locator, text):
+        global ele
+        flag = False
+        try:
+            eles = self.find_elements(locator)
+            for ele in eles:
+                if ele.text == text.replace("_", " "):
+                    ele.click()
+                    self.highlight_element(ele)
             flag = True
             log.logger.info(f"{ele} clicked successfully")
             print(f"{ele} clicked successfully")
