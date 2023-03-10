@@ -1,7 +1,7 @@
 import logging
 import traceback
 
-from features.steps.Utils.Logging_Operations import Logger
+from Utils.Logging_Operations import Logger
 
 log = Logger(__name__, logging.INFO)
 

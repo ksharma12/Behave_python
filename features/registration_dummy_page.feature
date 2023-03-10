@@ -1,7 +1,7 @@
 # Created by User at 3/9/2023
 Feature: # Enter feature name here
   # Enter feature description here
-
+  @Regression
   Scenario Outline: # Check Dummy Registration Page is working as expected
     Given User navigated to Landing page
     When Verify User successfully landed on home page
