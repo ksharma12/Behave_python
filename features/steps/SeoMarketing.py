@@ -137,3 +137,26 @@ def step_impl(context, Team_name):
     ele_texts = [ele.text for ele in context.ele_ops.find_elements("Teams_list__XPATH")]
     if len(ele_texts) == 0:
         assert True
+
+
+@then('User click on view for corresponding "{Team_name}" to view details')
+def step_impl(context, Team_name):
+    context.ele_ops = Element_Operations("SEO_MARKETING", context.driver)
+    context.ele_ops.wait_until_element_present_visible("Team_Name_Search_InputField__XPATH")
+    context.ele_ops.send_keys("Team_Name_Search_InputField__XPATH", Team_name)
+    context.ele_ops.wait_until_elements_present("Teams_list__XPATH")
+    context.ele_ops.click("View_team__XPATH")
+
+
+@then('Verify User able to view "{Team_name}"')
+def step_impl(context, Team_name):
+    context.ele_ops = Element_Operations("SEO_MARKETING", context.driver)
+    context.ele_ops.wait_until_element_present_visible("Project_Details_view__XPATH")
+    assert context.ele_ops.get_element_text("Team_Name__ID") == Team_name
+
+
+@then("Close the View Pop up")
+def step_impl(context):
+    context.ele_ops = Element_Operations("SEO_MARKETING", context.driver)
+    context.ele_ops.wait_until_element_present_visible("Close__XPATH")
+    context.ele_ops.click("Close__XPATH")

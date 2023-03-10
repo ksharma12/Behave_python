@@ -29,6 +29,20 @@ Feature: Seo Marketing
       | email                        | password | Team_name | User          | Description                |
       | sandeep.agarwal@khamelia.net | Pass@123 | Test      | Santosh_Kumar | This is a Test team master |
 
+  Scenario Outline: User Successfully View Team in Team Master
+    Given User navigated to seo marketing landing page
+    Then User enter "<email>" and "<password>" in respective fields
+    Then User clicked on sign In
+    Then User must be successfully navigated to the Dashboard
+    Then User navigated to Seo marketing
+    Then User navigated to Team Master
+    Then User click on view for corresponding "<Team_name>" to view details
+    Then Verify User able to view "<Team_name>"
+    Then Close the View Pop up
+    Examples:
+      | email                        | password | Team_name |
+      | sandeep.agarwal@khamelia.net | Pass@123 | Test      |
+
 
   Scenario Outline: User Successfully delete Team in Team Master
     Given User navigated to seo marketing landing page
