@@ -1,12 +1,12 @@
 import configparser
+import inspect
 import logging
 import os
-
 from selenium.webdriver import ActionChains
 import traceback
-
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
+import oR
 from Selenium_Operations.Driver_Operations import Driver_Operations
 from Selenium_Operations.Wait_Operations import Waits_Operations
 from Utils.Common_Operations import Common_Operations
@@ -38,11 +38,12 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
         self.actions = ActionChains(self.driver)
 
     def get_val(self, section, key):
-        this_folder = os.path.dirname(os.path.abspath(__file__))
-        init_file = os.path.join(this_folder, "../conf.ini")
-        config = configparser.RawConfigParser()
-        res = config.read(init_file)
-        return config.get(section, key)
+        return key
+        # this_folder = os.path.dirname(os.path.abspath(__file__))
+        # init_file = os.path.join(this_folder, "../conf.ini")
+        # config = configparser.RawConfigParser()
+        # res = config.read(init_file)
+        # return config.get(section, key)
 
     def get_value(self, file_path, section, key):
         try:
@@ -52,9 +53,16 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
         except:
             print(traceback.print_exc())
 
+    def get_variable_name(self, var, module):
+        for name, value in inspect.getmembers(module):
+            if value is var:
+                return name
+        return None
+
     def get_locator_signature(self, locator):
         try:
-            selector = str(locator).split("__")[1]
+            locator_name = self.get_variable_name(locator, oR)
+            selector = str(locator_name).split("__")[1]
             return self._selectors_dict[selector]
         except:
             print(traceback.print_exc())

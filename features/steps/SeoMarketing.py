@@ -1,9 +1,8 @@
 import configparser
 import os
 import time
-
 from behave import *
-
+import oR
 from Selenium_Operations.Element_Operations import Element_Operations
 
 use_step_matcher("parse")
@@ -25,24 +24,24 @@ def step_impl(context):
 @then('User enter "{email}" and "{password}" in respective fields')
 def step_impl(context, email, password):
     context.ele_ops = Element_Operations("SEO_MARKETING", context.driver)
-    context.ele_ops.wait_until_element_present_visible("email__ID")
-    context.ele_ops.send_keys("email__ID", email)
-    context.ele_ops.wait_until_element_present_visible("password__ID")
-    context.ele_ops.send_keys("password__ID", password)
+    context.ele_ops.wait_until_element_present_visible(oR.email__ID)
+    context.ele_ops.send_keys(oR.email__ID, email)
+    context.ele_ops.wait_until_element_present_visible(oR.password__ID)
+    context.ele_ops.send_keys(oR.password__ID, password)
 
 
 @then("User clicked on sign In")
 def step_impl(context):
     context.ele_ops = Element_Operations("SEO_MARKETING", context.driver)
-    context.ele_ops.wait_until_element_present_visible("sign_in_button__XPATH")
-    context.ele_ops.click("sign_in_button__XPATH")
+    context.ele_ops.wait_until_element_present_visible(oR.sign_in_button__XPATH)
+    context.ele_ops.click(oR.sign_in_button__XPATH)
 
 
 @then("User must be successfully navigated to the Dashboard")
 def step_impl(context):
     context.ele_ops = Element_Operations("SEO_MARKETING", context.driver)
-    context.ele_ops.wait_until_element_present_visible("dashboard_heading__XPATH")
-    assert context.ele_ops.get_element_text("dashboard_heading__XPATH") == "WELCOME TO DASHBOARD"
+    context.ele_ops.wait_until_element_present_visible(oR.dashboard_heading__XPATH)
+    assert context.ele_ops.get_element_text(oR.dashboard_heading__XPATH) == "WELCOME TO DASHBOARD"
     assert "Dashboard" in context.ele_ops.get_window_current_url()
 
 
