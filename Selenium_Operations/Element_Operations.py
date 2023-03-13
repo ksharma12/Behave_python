@@ -29,11 +29,10 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
         "PARTIAL_LINK_TEXT": By.PARTIAL_LINK_TEXT
     }
 
-    def __init__(self, section, driver):
+    def __init__(self, driver):
         self.driver = driver
-        self.section = section
         Common_Operations.__init__(self, self.driver)
-        Waits_Operations.__init__(self, self.section, self.driver)
+        Waits_Operations.__init__(self, self.driver)
         Driver_Operations.__init__(self, self.driver)
         self.actions = ActionChains(self.driver)
 
@@ -93,8 +92,7 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
     # This function return web element
     def find_element(self, locator):
         try:
-            web_element = self.driver.find_element(self.get_locator_signature(locator),
-                                                   self.get_val(self.section, locator))
+            web_element = self.driver.find_element(self.get_locator_signature(locator), locator)
             self.highlight_element(web_element)
             log.logger.info(f"{web_element} in focus now")
             print(f"{web_element} in focus now")
@@ -106,8 +104,7 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
     # This function return list of web elements
     def find_elements(self, locator):
         try:
-            web_elements = self.driver.find_elements(self.get_locator_signature(locator),
-                                                     self.get_val(self.section, locator))
+            web_elements = self.driver.find_elements(self.get_locator_signature(locator), locator)
             log.logger.info(f"{web_elements} in focus now")
             print(f"{web_elements} in focus now")
             return web_elements

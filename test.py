@@ -9,7 +9,7 @@ import oR
 
 
 def get_variable_name(var):
-    for name, value in inspect.getmembers(object_repository):
+    for name, value in inspect.getmembers(oR):
         if value is var:
             return name
     return None

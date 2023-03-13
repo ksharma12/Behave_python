@@ -7,6 +7,11 @@ Tutorials :-
 first run : https://behave.readthedocs.io/en/stable/tutorial.html
 environmental-controls : https://behave.readthedocs.io/en/stable/tutorial.html#environmental-controls
 python-step-implementation : https://behave.readthedocs.io/en/stable/tutorial.html#python-step-implementations
+-------------------------------------------------------------------------------------------------------------------
+Scenario :
+Scenario Outline :
+Scenario Template :
+Scenarios :
 ----------------------------------------------------------------------------
 Scenario : Basic implementation
   Scenario: validating the search feature
@@ -29,9 +34,6 @@ Scenario Outline : Implementation with multiple data listed in examples with exa
     | thing         | other thing |
     | iPhone        | toxic waste |
     | Galaxy Nexus  | toxic waste |
-----------------------------------------------------------------------------
-Scenario Template :
-Scenarios :
 ----------------------------------------------------------------------------
 if text included in between steps :
   Given a sample text loaded into the frobulator
@@ -96,6 +98,12 @@ Hooks :
  pip install git+https://github.com/behave/behave
 
  Intendation :- ctrl + alt + L in .feature file
+ ------------------------------------------------------------------------------------------------------------------------------------------
+ behave --tags=slow            => will run the scenario with tag slow
+ behave --tags=-slow           => will run all scenarios except tag slow
+ behave --tags=wip,slow        => will run scenarios with either wip or slow
+ behave --tags=wip --tags=slow => will select all test cases with wip and slow
+
 
 -----------------------------------------------------------------behave and allure report together--------------------------------------------------------------------------------
 - install allure behave : pip install allure-behave

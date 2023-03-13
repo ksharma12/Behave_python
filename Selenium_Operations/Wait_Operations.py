@@ -6,6 +6,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+import oR
+
 
 class Waits_Operations:
     _js_arg_ele_border_color = "red"
@@ -20,13 +22,10 @@ class Waits_Operations:
         "PARTIAL_LINK_TEXT": By.PARTIAL_LINK_TEXT
     }
 
-    def __init__(self, section, driver):
+    def __init__(self, driver):
         self.driver = driver
-        self.section = section
-        # self.explicit_wait = int(self.get_value("../conf.ini", "BASIC_CONFIGS", "explicit_wait"))
-        # self.fluent_wait = float(self.get_value("../conf.ini", "BASIC_CONFIGS", "fluent_wait"))
-        self.explicit_wait = 10
-        self.fluent_wait = 0.01
+        self.explicit_wait = int(oR.explicit_wait)
+        self.fluent_wait = float(oR.fluent_wait)
 
     def get_locator_signature(self, locator):
         try:
@@ -47,8 +46,7 @@ class Waits_Operations:
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             element = wait.until(
-                EC.element_to_be_clickable((self.get_locator_signature(locator),
-                                            self.get_val(self.section, locator))))
+                EC.element_to_be_clickable((self.get_locator_signature(locator), locator)))
             print(f"{element} element is in focus and clickable Now")
             return element
         except:
@@ -59,8 +57,7 @@ class Waits_Operations:
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             element_present = wait.until(
-                EC.presence_of_element_located((self.get_locator_signature(locator),
-                                                self.get_val(self.section, locator))))
+                EC.presence_of_element_located((self.get_locator_signature(locator), locator)))
             print(f"{element_present} element is in focus and present Now")
             return element_present
         except:
@@ -71,8 +68,7 @@ class Waits_Operations:
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             element_visible = wait.until(
-                EC.visibility_of_element_located((self.get_locator_signature(locator),
-                                                  self.get_val(self.section, locator))))
+                EC.visibility_of_element_located((self.get_locator_signature(locator), locator)))
             print(f"{element_visible} element is in focus and present Now")
             return element_visible
         except:
@@ -83,8 +79,7 @@ class Waits_Operations:
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             element_present = wait.until(
-                EC.presence_of_element_located((self.get_locator_signature(locator),
-                                                self.get_val(self.section, locator))))
+                EC.presence_of_element_located((self.get_locator_signature(locator), locator)))
             element_present_visible = wait.until(
                 EC.visibility_of(element_present))
             print(f"{element_present_visible} element is in focus and present and visible Now")
@@ -97,8 +92,7 @@ class Waits_Operations:
         flag = False
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
-            flag = wait.until(EC.invisibility_of_element_located((self.get_locator_signature(locator),
-                                                                  self.get_val(self.section, locator))))
+            flag = wait.until(EC.invisibility_of_element_located((self.get_locator_signature(locator), locator)))
             print(f"{flag} > is invisible Now")
             return flag
         except:
@@ -129,8 +123,7 @@ class Waits_Operations:
     def wait_until_elements_visible_located(self, locator):
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
-            elements = wait.until(EC.visibility_of_all_elements_located((self.get_locator_signature(locator),
-                                                                         self.get_val(self.section, locator))))
+            elements = wait.until(EC.visibility_of_all_elements_located((self.get_locator_signature(locator), locator)))
             print(f"{elements} waited until all {len(elements)} elements are visible")
             return elements
         except:
@@ -140,8 +133,8 @@ class Waits_Operations:
     def wait_until_any_element_is_visible(self, locator):
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
-            elements_list = wait.until(EC.visibility_of_any_elements_located((self.get_locator_signature(locator),
-                                                                              self.get_val(self.section, locator))))
+            elements_list = wait.until(
+                EC.visibility_of_any_elements_located((self.get_locator_signature(locator), locator)))
             print(f"{elements_list} waited until {len(elements_list)} elements are visible")
             return elements_list
         except:
@@ -151,8 +144,8 @@ class Waits_Operations:
     def wait_until_elements_present(self, locator):
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
-            element_list = wait.until(EC.presence_of_all_elements_located((self.get_locator_signature(locator),
-                                                                           self.get_val(self.section, locator))))
+            element_list = wait.until(
+                EC.presence_of_all_elements_located((self.get_locator_signature(locator), locator)))
             print(f"{element_list} waited until all {len(element_list)} elements become present")
             return element_list
         except:
@@ -219,8 +212,7 @@ class Waits_Operations:
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             flag = wait.until(
-                EC.text_to_be_present_in_element((self.get_locator_signature(locator),
-                                                  self.get_val(self.section, locator)), text))
+                EC.text_to_be_present_in_element((self.get_locator_signature(locator), locator), text))
             print(f"{flag} > waited until {text} present")
             return flag
         except:
@@ -232,8 +224,7 @@ class Waits_Operations:
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             flag = wait.until(EC.text_to_be_present_in_element_attribute(
-                (self.get_locator_signature(locator),
-                 self.get_val(self.section, locator)), attribute,
+                (self.get_locator_signature(locator), locator), attribute,
                 text))
             print(f"{flag} > waited until {text} present in {attribute}")
             return flag
@@ -246,8 +237,7 @@ class Waits_Operations:
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             flag = wait.until(EC.text_to_be_present_in_element_value(
-                (self.get_locator_signature(locator),
-                 self.get_val(self.section, locator)), text))
+                (self.get_locator_signature(locator), locator), text))
             print(f"{flag} > waited until {text} present")
             return flag
         except:
@@ -270,8 +260,7 @@ class Waits_Operations:
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             flag = wait.until(EC.element_located_to_be_selected(
-                (self.get_locator_signature(locator),
-                 self.get_val(self.section, locator))))
+                (self.get_locator_signature(locator), locator)))
             print(f"{flag} > waited until element is selected")
             return flag
         except:
@@ -283,8 +272,7 @@ class Waits_Operations:
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             flag = wait.until(EC.element_located_selection_state_to_be(
-                (self.get_locator_signature(locator),
-                 self.get_val(self.section, locator)), is_selected))
+                (self.get_locator_signature(locator), locator), is_selected))
             print(f"{flag} > waited until selected state become {is_selected}")
             return flag
         except:
@@ -296,9 +284,7 @@ class Waits_Operations:
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             flag = wait.until(
-                EC.element_attribute_to_include((self.get_locator_signature(locator),
-                                                self.get_val(self.section, locator)),
-                                                attribute))
+                EC.element_attribute_to_include((self.get_locator_signature(locator), locator), attribute))
             print(f"{flag} > waited until element include {attribute}")
             return flag
         except:
@@ -342,8 +328,7 @@ class Waits_Operations:
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             flag = wait.until(EC.frame_to_be_available_and_switch_to_it(
-                (self.get_locator_signature(locator),
-                 self.get_val(self.section, locator))))
+                (self.get_locator_signature(locator), locator)))
             print(f"{flag} > waited until iframe available to switch")
             return flag
         except:
