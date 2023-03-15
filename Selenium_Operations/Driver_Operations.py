@@ -80,7 +80,6 @@ class Driver_Operations:
             assert False
 
         # locator must be id/name of frame
-
     def switch_to_frame(self, iframe_reference):
         try:
             self.driver.switch_to.frame(iframe_reference)

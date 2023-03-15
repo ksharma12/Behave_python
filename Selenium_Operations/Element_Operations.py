@@ -2,6 +2,9 @@ import configparser
 import inspect
 import logging
 import os
+import time
+from datetime import date
+
 from selenium.webdriver import ActionChains
 import traceback
 from selenium.webdriver.common.by import By
@@ -108,6 +111,36 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             log.logger.info(f"{web_elements} in focus now")
             print(f"{web_elements} in focus now")
             return web_elements
+        except:
+            print(traceback.print_exc())
+            assert False
+
+    # take target day, Note: Years are not handled in this
+    def choose_date_from_jquery_calender(self, target_date, next_locator, previous_locator):
+        try:
+            current_date = date.today()
+            target_day = int(target_date.split("/")[1])
+            target_month = int(target_date.split("/")[0])
+            current_month = current_date.month
+            increment = True
+            if target_month - current_month > 0:
+                jump_months_by = target_month - current_month
+            else:
+                jump_months_by = current_month - target_month
+                increment = False
+            for i in range(0, jump_months_by):
+                if increment:
+                    self.wait_until_element_present_visible(next_locator)
+                    self.click(next_locator)
+                    log.logger.info(f"{next_locator} next month")
+                    print(f"{next_locator} next month")
+                else:
+                    self.wait_until_element_present_visible(previous_locator)
+                    self.click(previous_locator)
+                    log.logger.info(f"{next_locator} previous month")
+                    print(f"{next_locator} previous month")
+            time.sleep(1)
+            self.driver.find_element(By.LINK_TEXT, str(target_day)).click()
         except:
             print(traceback.print_exc())
             assert False

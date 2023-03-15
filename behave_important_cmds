@@ -103,6 +103,9 @@ Hooks :
  behave --tags=-slow           => will run all scenarios except tag slow
  behave --tags=wip,slow        => will run scenarios with either wip or slow
  behave --tags=wip --tags=slow => will select all test cases with wip and slow
+ behave -n 'This is a scenario name'
+ behave -i file_name.feature / behave --include file_name
+ behave -e file_name => for excluding
 
 
 -----------------------------------------------------------------behave and allure report together--------------------------------------------------------------------------------
