@@ -33,6 +33,7 @@ class Waits_Operations:
             return self._selectors_dict[selector]
         except:
             print(traceback.print_exc())
+            assert False
 
     def get_val(self, section, key):
         this_folder = os.path.dirname(os.path.abspath(__file__))
@@ -51,6 +52,7 @@ class Waits_Operations:
             return element
         except:
             print(traceback.print_exc())
+            assert False
 
     # This function wait for presence of element in dom and return ele
     def wait_until_element_present(self, locator):
@@ -62,6 +64,7 @@ class Waits_Operations:
             return element_present
         except:
             print(traceback.print_exc())
+            assert False
 
     # This function wait for visibility of element in dom and return ele
     def wait_until_element_visible_located(self, locator):
@@ -73,6 +76,7 @@ class Waits_Operations:
             return element_visible
         except:
             print(traceback.print_exc())
+            assert False
 
     # This function wait for presence and visibility of element in dom and return ele
     def wait_until_element_present_visible(self, locator):
@@ -86,10 +90,10 @@ class Waits_Operations:
             return element_present_visible
         except:
             print(traceback.print_exc())
+            assert False
 
     # This function return True once element become invisible
     def wait_until_element_invisible_locator(self, locator):
-        flag = False
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             flag = wait.until(EC.invisibility_of_element_located((self.get_locator_signature(locator), locator)))
@@ -97,10 +101,10 @@ class Waits_Operations:
             return flag
         except:
             print(traceback.print_exc())
+            assert False
 
     # This function return True once element become invisible
     def wait_until_element_invisible(self, web_element):
-        flag = False
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             flag = wait.until(EC.invisibility_of_element(web_element))
@@ -108,6 +112,7 @@ class Waits_Operations:
             return flag
         except:
             print(traceback.print_exc())
+            assert False
 
     # This function return element once element is visible
     def wait_until_element_visible(self, web_element):
@@ -118,6 +123,7 @@ class Waits_Operations:
             return element
         except:
             print(traceback.print_exc())
+            assert False
 
     # This function return list of all visible elements once elements are visible
     def wait_until_elements_visible_located(self, locator):
@@ -128,6 +134,7 @@ class Waits_Operations:
             return elements
         except:
             print(traceback.print_exc())
+            assert False
 
     # This function return list of any visible elements once they are visible
     def wait_until_any_element_is_visible(self, locator):
@@ -139,6 +146,7 @@ class Waits_Operations:
             return elements_list
         except:
             print(traceback.print_exc())
+            assert False
 
     # This function return list of elements once present in dom
     def wait_until_elements_present(self, locator):
@@ -150,10 +158,10 @@ class Waits_Operations:
             return element_list
         except:
             print(traceback.print_exc())
+            assert False
 
     # This function waited for presence of alert on the web page
     def wait_until_alert_is_present(self):
-        flag = False
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             flag = wait.until(EC.alert_is_present())
@@ -161,10 +169,10 @@ class Waits_Operations:
             return flag
         except:
             print(traceback.print_exc())
+            assert False
 
     # Return True once url changed from url passed in arguments
     def wait_until_url_changes(self, url):
-        flag = False
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             flag = wait.until(EC.url_changes(url))
@@ -172,10 +180,10 @@ class Waits_Operations:
             return flag
         except:
             print(traceback.print_exc())
+            assert False
 
     # Return True once url is equal to url passed in arguments
     def wait_until_url_is(self, url):
-        flag = False
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             flag = wait.until(EC.url_to_be(url))
@@ -183,10 +191,10 @@ class Waits_Operations:
             return flag
         except:
             print(traceback.print_exc())
+            assert False
 
     # Return true once url matches to url passed in argument
     def wait_until_url_matches_to(self, pattern):
-        flag = False
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             flag = wait.until(EC.url_matches(pattern))
@@ -194,10 +202,10 @@ class Waits_Operations:
             return flag
         except:
             print(traceback.print_exc())
+            assert False
 
     # Return true once url contains to url passed in argument
     def wait_until_url_contains(self, url_part):
-        flag = False
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             flag = wait.until(EC.url_contains(url_part))
@@ -205,10 +213,10 @@ class Waits_Operations:
             return flag
         except:
             print(traceback.print_exc())
+            assert False
 
     # Return true once passed txt is present in element
     def wait_until_text_to_be_present_in_element(self, locator, text):
-        flag = False
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             flag = wait.until(
@@ -217,10 +225,10 @@ class Waits_Operations:
             return flag
         except:
             print(traceback.print_exc())
+            assert False
 
     # Return true if text is present in attribute of element
     def wait_until_text_to_be_present_in_element_attribute(self, locator, attribute, text):
-        flag = False
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             flag = wait.until(EC.text_to_be_present_in_element_attribute(
@@ -230,10 +238,10 @@ class Waits_Operations:
             return flag
         except:
             print(traceback.print_exc())
+            assert False
 
     # Return true if text is present in value of element    // currently failing
     def wait_until_text_to_be_present_in_element_value(self, locator, text):
-        flag = False
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             flag = wait.until(EC.text_to_be_present_in_element_value(
@@ -242,10 +250,10 @@ class Waits_Operations:
             return flag
         except:
             print(traceback.print_exc())
+            assert False
 
     # Return true if checkbox/radio btn is selected
     def wait_until_element_selected(self, web_element):
-        flag = False
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             flag = wait.until(EC.element_to_be_selected(web_element))
@@ -253,10 +261,10 @@ class Waits_Operations:
             return flag
         except:
             print(traceback.print_exc())
+            assert False
 
     # Return true if checkbox/radio btn is selected
     def wait_until_element_located_selected(self, locator):
-        flag = False
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             flag = wait.until(EC.element_located_to_be_selected(
@@ -265,10 +273,10 @@ class Waits_Operations:
             return flag
         except:
             print(traceback.print_exc())
+            assert False
 
     # Return true if checkbox/radio btn selected state is True/False as per argument given
     def wait_until_element_selected_state_is(self, locator, is_selected):
-        flag = False
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             flag = wait.until(EC.element_located_selection_state_to_be(
@@ -277,10 +285,10 @@ class Waits_Operations:
             return flag
         except:
             print(traceback.print_exc())
+            assert False
 
     # Return true if element has required attribute or not
     def wait_until_element_attribute_to_include(self, locator, attribute):
-        flag = False
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             flag = wait.until(
@@ -289,6 +297,7 @@ class Waits_Operations:
             return flag
         except:
             print(traceback.print_exc())
+            assert False
 
     # // failing
     def wait_until_element_visiblty_is(self, web_element, visibility):
@@ -299,10 +308,10 @@ class Waits_Operations:
             return element
         except:
             print(traceback.print_exc())
+            assert False
 
     # Return true if title is required title
     def wait_until_title_is(self, title):
-        flag = False
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             flag = wait.until(EC.title_is(title))
@@ -310,10 +319,10 @@ class Waits_Operations:
             return flag
         except:
             print(traceback.print_exc())
+            assert False
 
     # Return true if title part is present in current window title
     def wait_until_title_contains(self, title_part):
-        flag = False
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             flag = wait.until(EC.title_contains(title_part))
@@ -321,10 +330,10 @@ class Waits_Operations:
             return flag
         except:
             print(traceback.print_exc())
+            assert False
 
     # Return true if iframe available and focus switched to it
     def wait_until_frame_avial_switch_to(self, locator):
-        flag = False
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             flag = wait.until(EC.frame_to_be_available_and_switch_to_it(
@@ -333,12 +342,12 @@ class Waits_Operations:
             return flag
         except:
             print(traceback.print_exc())
+            assert False
 
         # Return true if iframe available and focus switched to it
 
     # Return true if open windows count is equal to argument passed
     def wait_until_windows_count_is(self, number):
-        flag = False
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             flag = wait.until(EC.number_of_windows_to_be(number))
@@ -346,10 +355,10 @@ class Waits_Operations:
             return flag
         except:
             print(traceback.print_exc())
+            assert False
 
     # Return true if open windows count is equal to argument passed   // failing
     def wait_until_new_window_is_opened(self, current_window_handle):
-        flag = False
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             flag = wait.until(EC.new_window_is_opened(current_window_handle))
@@ -357,17 +366,17 @@ class Waits_Operations:
             return flag
         except:
             print(traceback.print_exc())
+            assert False
 
     # Return true if staleness of element is True
     def wait_until_staleness_of_ele(self, element):
-        flag = False
         try:
             wait = WebDriverWait(self.driver, timeout=self.explicit_wait, poll_frequency=self.fluent_wait)
             flag = wait.until(EC.staleness_of(element))
             print(f"{flag} > waited until staleness of {element}")
             return flag
         except:
-            print(traceback.print_exc())
+            return False
 
     # Example of [all_of/any_of/none_off] this can be used to make multiple expected conditions
     # WebDriverWait(browser, 10).until(EC.all_of(

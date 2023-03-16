@@ -35,6 +35,7 @@ def step_impl(context):
 @then("User clicked on SignIn For Khamelia")
 def step_impl(context):
     context.ele_ops = Element_Operations(context.driver)
+    context.ele_ops.wait_until_element_invisible_locator(oR.Khamelia_login_hide__ID)
     context.ele_ops.wait_until_element_present_visible(oR.khamelia_signIn_btn__ID)
     context.ele_ops.click(oR.khamelia_signIn_btn__ID)
 
@@ -50,9 +51,9 @@ def step_impl(context):
 @then("User Uncheck Keep me sign in checkbox for Khamelia")
 def step_impl(context):
     context.ele_ops = Element_Operations(context.driver)
-    context.ele_ops.wait_until_element_present_visible(oR.khamelia_keepMeSignIn_checkbox__ID)
-    if context.ele_ops.check_element_is_selected(oR.khamelia_keepMeSignIn_checkbox__ID):
-        context.ele_ops.click(oR.khamelia_keepMeSignIn_checkbox__ID)
+    context.ele_ops.wait_until_element_present_visible(oR.khamelia_keepMeSignIn_checkbox__XPATH)
+    if context.ele_ops.check_element_is_selected(oR.khamelia_keepMeSignIn_checkbox__XPATH):
+        context.ele_ops.click(oR.khamelia_keepMeSignIn_checkbox__XPATH)
 
 
 @given("User already logged in the application")
@@ -119,8 +120,8 @@ def step_impl(context):
 @then("User clicked on CANCEL")
 def step_impl(context):
     context.ele_ops = Element_Operations(context.driver)
-    context.ele_ops.wait_until_element_present_visible(oR.CANCEL__ID)
-    context.ele_ops.click(oR.CANCEL__ID)
+    context.ele_ops.wait_until_element_present_visible(oR.BACK_CANCEL__ID)
+    context.ele_ops.click(oR.BACK_CANCEL__ID)
 
 
 @then("User clicked on NEXT")
@@ -160,7 +161,6 @@ def step_impl(context, company):
 
 @then('User select team "{team}"')
 def step_impl(context, team):
-    time.sleep(1)
     context.ele_ops = Element_Operations(context.driver)
     context.ele_ops.wait_until_element_present_visible(oR.Team_Dropdown__XPATH)
     context.ele_ops.select_by_visible_text(oR.Team_Dropdown__XPATH, team)
@@ -221,10 +221,13 @@ def step_impl(context, project_sponsor):
     context.ele_ops = Element_Operations(context.driver)
     context.ele_ops.wait_until_element_present_visible(oR.Project_Sponsor__XPATH)
     context.ele_ops.click(oR.Project_Sponsor__XPATH)
-    context.ele_ops.wait_until_element_present_visible(oR.Project_Sponsor__XPATH)
-    context.ele_ops.scroll_to_element(oR.Project_Sponsor_User__XPATH)
-    context.ele_ops.wait_until_element_present_visible(oR.Project_Sponsor_User__XPATH)
-    context.ele_ops.click(oR.Project_Sponsor_User__XPATH)
+    print(context.ele_ops.wait_until_staleness_of_ele(oR.Project_Sponsor_User__XPATH))
+    if context.ele_ops.wait_until_staleness_of_ele(oR.Project_Sponsor_User__XPATH):
+        context.ele_ops.wait_until_element_present_visible(oR.Project_Sponsor_User__XPATH)
+        context.ele_ops.click(oR.Project_Sponsor_User__XPATH)
+    else:
+        context.ele_ops.wait_until_element_present_visible(oR.Project_Sponsor_User__XPATH)
+        context.ele_ops.click(oR.Project_Sponsor_User__XPATH)
 
 
 @then('User select project approver "{project_approver}"')
@@ -232,9 +235,8 @@ def step_impl(context, project_approver):
     context.ele_ops = Element_Operations(context.driver)
     context.ele_ops.wait_until_element_present_visible(oR.Project_Approver__XPATH)
     context.ele_ops.click(oR.Project_Approver__XPATH)
-    context.ele_ops.wait_until_element_present_visible(oR.Project_Approver__XPATH)
-    context.ele_ops.scroll_to_element(oR.Project_Approver_User__XPATH)
     context.ele_ops.wait_until_element_present_visible(oR.Project_Approver_User__XPATH)
+    context.ele_ops.scroll_to_element(oR.Project_Approver_User__XPATH)
     context.ele_ops.click(oR.Project_Approver_User__XPATH)
 
 
@@ -245,7 +247,6 @@ def step_impl(context, project_contact):
     context.ele_ops.click(oR.Project_Contact__XPATH)
     context.ele_ops.wait_until_element_present_visible(oR.Project_Contact_User__XPATH)
     context.ele_ops.scroll_to_element(oR.Project_Contact_User__XPATH)
-    context.ele_ops.wait_until_element_present_visible(oR.Project_Contact_User__XPATH)
     context.ele_ops.click(oR.Project_Contact_User__XPATH)
 
 
@@ -256,7 +257,6 @@ def step_impl(context, default_task_assignee):
     context.ele_ops.click(oR.Project_Default_Task_Assignee__XPATH)
     context.ele_ops.wait_until_element_present_visible(oR.Project_Assignee_User__XPATH)
     context.ele_ops.scroll_to_element(oR.Project_Assignee_User__XPATH)
-    context.ele_ops.wait_until_element_present_visible(oR.Project_Assignee_User__XPATH)
     context.ele_ops.click(oR.Project_Assignee_User__XPATH)
 
 
@@ -316,7 +316,7 @@ def step_impl(context, planned_cost):
 @then('User enter project actual hours "{actual_hours}"')
 def step_impl(context, actual_hours):
     context.ele_ops = Element_Operations(context.driver)
-    print(context.ele_ops.wait_until_element_invisible_locator(oR.Project_Actual_Hours__XPATH))
+    context.ele_ops.wait_until_element_present_visible(oR.Project_Actual_Hours__XPATH)
     context.ele_ops.clear(oR.Project_Actual_Hours__XPATH)
     context.ele_ops.send_keys(oR.Project_Actual_Hours__XPATH, actual_hours)
 
@@ -372,8 +372,9 @@ def step_impl(context):
     context.ele_ops.click(oR.BACK_CANCEL__ID)
 
 
-@then("User clicked on Project Submit Button")
+@then("User clicked on Project Finish Button")
 def step_impl(context):
     context.ele_ops = Element_Operations(context.driver)
     context.ele_ops.wait_until_element_present_visible(oR.FINISH__ID)
     context.ele_ops.click(oR.FINISH__ID)
+    context.ele_ops.wait_until_element_invisible_locator(oR.New_Project_Creation_Div__ID)

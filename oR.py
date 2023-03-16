@@ -58,9 +58,10 @@ resources_practice_site_1__XPATH = "//li[@id='menu-item-27618']//span[@class='me
 khamelia_login__XPATH = "//ul[@class='nav-menu sf-js-enabled sf-arrows']//a[normalize-space()='Login']"
 khamelia_email_address_inbox__ID = "txtEmailAddress"
 khamelia_password_inbox__ID = "txtPassword"
-khamelia_signIn_btn__ID = "lnkSIgnIn"
+khamelia_signIn_btn__ID = "DivSignIn"
 khamelia_cancel_btn__ID = "lnkCancel"
-khamelia_keepMeSignIn_checkbox__ID = "chkKeepSignIn"
+khamelia_keepMeSignIn_checkbox__XPATH = "//label[normalize-space()='Keep me signed in']"
+Khamelia_login_hide__ID = "login-hideMe"
 
 # User Options
 BACK_CANCEL__ID = "alinkProjectBack"
@@ -72,6 +73,7 @@ new_Project__ID = "DivRibbonBarButton-105"
 idasdf__ID = "txtBudgetHourlyRate"
 idasdfg__ID = "txtProjectFixedCost"
 
+New_Project_Creation_Div__ID = "DivProjectcreateNew"
 Project_Name_inbox__ID = "txtProjectName_Create"
 Project_Type_Dropdown__XPATH = "//select[@name='drpCreateProjectType']"
 Company_Dropdown__XPATH = "//select[@ng-change='GetTeamByCompany(CreateProjectCompanyID);']"

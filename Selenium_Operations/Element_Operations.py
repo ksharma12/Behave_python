@@ -5,6 +5,7 @@ import os
 import time
 from datetime import date
 
+from selenium.common import StaleElementReferenceException
 from selenium.webdriver import ActionChains
 import traceback
 from selenium.webdriver.common.by import By
@@ -71,25 +72,23 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
 
     # This function highlight respective element
     def highlight_element(self, web_element):
-        flag = False
         try:
             self.execute_js_script(f"arguments[0].style.border='2px solid {self._js_arg_ele_border_color}'",
                                    web_element)
-            flag = True
             print(f"{web_element} element highlighted with border color {self._js_arg_ele_border_color}")
+            return True
         except:
             print(traceback.print_exc())
-        return flag
+            return False
 
     # This function execute required js script on respective element
     def execute_js_script(self, js_script, web_element):
-        flag = False
         try:
             self.driver.execute_script(js_script, web_element)
-            flag = True
+            return True
         except:
             print(traceback.print_exc())
-        return flag
+            return False
 
     # WebElement Operations
     # This function return web element
@@ -139,7 +138,6 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
                     self.click(previous_locator)
                     log.logger.info(f"{next_locator} previous month")
                     print(f"{next_locator} previous month")
-            time.sleep(1)
             self.driver.find_element(By.LINK_TEXT, str(target_day)).click()
         except:
             print(traceback.print_exc())
@@ -147,61 +145,53 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
 
     # This function click on web element
     def click(self, locator):
-        flag = False
         try:
             ele = self.find_element(locator)
             self.highlight_element(ele)
             ele.click()
-            flag = True
             log.logger.info(f"{ele} clicked successfully")
             print(f"{ele} clicked successfully")
+            return True
         except:
             print(traceback.print_exc())
             assert False
-        return flag
 
     def click_from_multiple_ele_text_basis(self, locator, text):
         global ele
-        flag = False
         try:
             eles = self.find_elements(locator)
             for ele in eles:
                 if ele.text == text.replace("_", " "):
                     ele.click()
                     self.highlight_element(ele)
-            flag = True
             log.logger.info(f"{ele} clicked successfully")
             print(f"{ele} clicked successfully")
+            return True
         except:
             print(traceback.print_exc())
             assert False
-        return flag
 
     # This function click on web element via js script
     def click_js(self, locator):
-        flag = False
         try:
             ele = self.find_element(locator)
             self.highlight_element(ele)
             self.execute_js_script("arguments[0].click();", ele)
-            flag = True
             log.logger.info(f"{ele} clicked successfully via js script")
             print(f"{ele} clicked successfully via js script")
+            return True
         except:
             print(traceback.print_exc())
             assert False
-        return flag
 
     # This function click on web element via actions
     def click_action(self, locator):
-        flag = False
         try:
             ele = self.find_element(locator)
             self.highlight_element(ele)
             print("clicked successfully via action class")
             log.logger.info(f"{ele} clicked successfully via js script")
             self.actions.click(on_element=ele)
-            flag = True
             return self
         except:
             print(traceback.print_exc())
@@ -209,115 +199,101 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
 
     # This function select dropdown/checkbox/radio_btn by value
     def select_by_value(self, locator, value):
-        flag = False
         try:
             dropdown_ele = self.find_element(locator)
             select = Select(dropdown_ele)
             self.highlight_element(dropdown_ele)
             select.select_by_value(value=value)
-            flag = True
             log.logger.info(f"{dropdown_ele} dropdown selected successfully via value")
             print(f"{dropdown_ele} dropdown selected successfully via value")
+            return True
         except:
             print(traceback.print_exc())
             assert False
-        return flag
 
     # This function select dropdown/checkbox/radio_btn by index
     def select_by_index(self, locator, index):
-        flag = False
         try:
             dropdown_ele = self.find_element(locator)
             self.highlight_element(dropdown_ele)
             select = Select(dropdown_ele)
             select.select_by_index(index=index)
-            flag = True
             log.logger.info(f"{dropdown_ele} dropdown selected successfully via index")
             print(f"{dropdown_ele} dropdown selected successfully via index")
+            return True
         except:
             print(traceback.print_exc())
             assert False
-        return flag
 
     # This function select dropdown/checkbox/radio_btn by visible text
     def select_by_visible_text(self, locator, visible_text):
-        flag = False
         try:
             dropdown_ele = self.find_element(locator)
             self.highlight_element(dropdown_ele)
             select = Select(dropdown_ele)
             select.select_by_visible_text(text=visible_text)
-            flag = True
             log.logger.info(f"{dropdown_ele} dropdown selected successfully via visible text")
             print(f"{dropdown_ele} dropdown selected successfully via visible text")
+            return True
         except:
             print(traceback.print_exc())
             assert False
-        return flag
 
     # This function deselect dropdown/checkbox/radio_btn by value
     def deselect_by_value(self, locator, value):
-        flag = False
         try:
             dropdown_ele = self.find_element(locator)
             self.highlight_element(dropdown_ele)
             select = Select(dropdown_ele)
             select.deselect_by_value(value=value)
-            flag = True
             log.logger.info(f"{dropdown_ele} dropdown deselected successfully via value")
             print(f"{dropdown_ele} dropdown deselected successfully via value")
+            return True
         except:
             print(traceback.print_exc())
             assert False
-        return flag
 
     # This function deselect dropdown/checkbox/radio_btn by index
     def deselect_by_index(self, locator, index):
-        flag = False
         try:
             dropdown_ele = self.find_element(locator)
             self.highlight_element(dropdown_ele)
             select = Select(dropdown_ele)
             select.deselect_by_index(index=index)
-            flag = True
             log.logger.info(f"{dropdown_ele} dropdown deselected successfully via index")
             print(f"{dropdown_ele} dropdown deselected successfully via index")
+            return True
         except:
             print(traceback.print_exc())
             assert False
-        return flag
 
     # This function deselect dropdown/checkbox/radio_btn by index
     def deselect_by_visible_text(self, locator, visible_text):
-        flag = False
         try:
             dropdown_ele = self.find_element(locator)
             self.highlight_element(dropdown_ele)
             select = Select(dropdown_ele)
             select.deselect_by_visible_text(text=visible_text)
-            flag = True
             log.logger.info(f"{dropdown_ele} dropdown deselected successfully via visible text")
             print(f"{dropdown_ele} dropdown deselected successfully via visible text")
+            return True
         except:
             print(traceback.print_exc())
             assert False
-        return flag
 
     # This function deselect all options in dropdown/checkbox/radio_btn
     def deselect_all_options(self, locator):
-        flag = False
         try:
             dropdown_ele = self.find_element(locator)
             self.highlight_element(dropdown_ele)
             select = Select(dropdown_ele)
             select.deselect_all()
-            flag = True
             log.logger.info(f"{dropdown_ele} all dropdown options deselected successfully")
             print(f"{dropdown_ele} all dropdown options deselected successfully")
+            return True
         except:
             print(traceback.print_exc())
             assert False
-        return flag
 
     # This function get element text
     def get_element_text(self, locator):
@@ -334,18 +310,16 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
 
     # This function send keys to web element[input]
     def send_keys(self, locator, send_keys_value):
-        flag = False
         try:
             ele = self.find_element(locator)
             self.highlight_element(ele)
             ele.send_keys(send_keys_value)
             log.logger.info(f"{ele} element input value is {send_keys_value}")
             print(f"{ele} element input value is {send_keys_value}")
-            flag = True
+            return True
         except:
             print(traceback.print_exc())
             assert False
-        return flag
 
     # This function get web element css property
     def get_element_value_of_css_property(self, locator, css_property_name):
@@ -414,18 +388,16 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
 
     # The submit() function is applicable only for <form> and makes handling of form easier
     def submit(self, locator):
-        flag = False
         try:
             ele = self.find_element(locator)
             self.highlight_element(ele)
             # print(f"element tagname is {str(ele.tag_name)}")
             # log.logger.info(f"{ele} element tagname is {str(ele_tag_name)}")
             ele.submit()
-            flag = True
+            return True
         except:
             print(traceback.print_exc())
             assert False
-        return flag
 
     # The submit() function is applicable only for <form> and makes handling of form easier
     def get_element_accessible_name(self, locator):
@@ -442,22 +414,19 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
 
     # This function clear input field
     def clear(self, locator):
-        flag = False
         try:
             ele = self.find_element(locator)
             self.highlight_element(ele)
             ele.clear()
             log.logger.info(f"{ele} element cleared")
             print(f"{ele} element cleared {ele}")
-            flag = True
+            return True
         except:
             print(traceback.print_exc())
             assert False
-        return flag
 
     # This function return true if element is selected
     def check_element_is_selected(self, locator):
-        flag = False
         try:
             ele = self.find_element(locator)
             self.highlight_element(ele)
