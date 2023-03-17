@@ -140,6 +140,7 @@ def step_impl(context):
 
 @then('User enter project name "{Project_Name}"')
 def step_impl(context, Project_Name):
+    time.sleep(1)
     context.ele_ops = Element_Operations(context.driver)
     context.ele_ops.wait_until_element_present_visible(oR.Project_Name_inbox__ID)
     context.ele_ops.send_keys(oR.Project_Name_inbox__ID, Project_Name)
@@ -221,11 +222,13 @@ def step_impl(context, project_sponsor):
     context.ele_ops = Element_Operations(context.driver)
     context.ele_ops.wait_until_element_present_visible(oR.Project_Sponsor__XPATH)
     context.ele_ops.click(oR.Project_Sponsor__XPATH)
-    print(context.ele_ops.wait_until_staleness_of_ele(oR.Project_Sponsor_User__XPATH))
-    if context.ele_ops.wait_until_staleness_of_ele(oR.Project_Sponsor_User__XPATH):
+    try:
         context.ele_ops.wait_until_element_present_visible(oR.Project_Sponsor_User__XPATH)
         context.ele_ops.click(oR.Project_Sponsor_User__XPATH)
-    else:
+    except:
+        context.ele_ops.wait_until_element_present_visible(oR.Project_Sponsor__XPATH)
+        context.ele_ops.click(oR.Project_Sponsor__XPATH)
+        context.ele_ops.click(oR.Project_Sponsor__XPATH)
         context.ele_ops.wait_until_element_present_visible(oR.Project_Sponsor_User__XPATH)
         context.ele_ops.click(oR.Project_Sponsor_User__XPATH)
 
@@ -235,9 +238,17 @@ def step_impl(context, project_approver):
     context.ele_ops = Element_Operations(context.driver)
     context.ele_ops.wait_until_element_present_visible(oR.Project_Approver__XPATH)
     context.ele_ops.click(oR.Project_Approver__XPATH)
-    context.ele_ops.wait_until_element_present_visible(oR.Project_Approver_User__XPATH)
-    context.ele_ops.scroll_to_element(oR.Project_Approver_User__XPATH)
-    context.ele_ops.click(oR.Project_Approver_User__XPATH)
+    try:
+        context.ele_ops.wait_until_element_present_visible(oR.Project_Approver_User__XPATH)
+        context.ele_ops.scroll_to_element(oR.Project_Approver_User__XPATH)
+        context.ele_ops.click(oR.Project_Approver_User__XPATH)
+    except:
+        context.ele_ops.wait_until_element_present_visible(oR.Project_Approver__XPATH)
+        context.ele_ops.click(oR.Project_Approver__XPATH)
+        context.ele_ops.click(oR.Project_Approver__XPATH)
+        context.ele_ops.wait_until_element_present_visible(oR.Project_Approver_User__XPATH)
+        context.ele_ops.scroll_to_element(oR.Project_Approver_User__XPATH)
+        context.ele_ops.click(oR.Project_Approver_User__XPATH)
 
 
 @then('User select project contact "{project_contact}"')
@@ -245,10 +256,17 @@ def step_impl(context, project_contact):
     context.ele_ops = Element_Operations(context.driver)
     context.ele_ops.wait_until_element_present_visible(oR.Project_Contact__XPATH)
     context.ele_ops.click(oR.Project_Contact__XPATH)
-    context.ele_ops.wait_until_element_present_visible(oR.Project_Contact_User__XPATH)
-    context.ele_ops.scroll_to_element(oR.Project_Contact_User__XPATH)
-    context.ele_ops.click(oR.Project_Contact_User__XPATH)
-
+    try:
+        context.ele_ops.wait_until_element_present_visible(oR.Project_Contact_User__XPATH)
+        context.ele_ops.scroll_to_element(oR.Project_Contact_User__XPATH)
+        context.ele_ops.click(oR.Project_Contact_User__XPATH)
+    except:
+        context.ele_ops.wait_until_element_present_visible(oR.Project_Contact__XPATH)
+        context.ele_ops.click(oR.Project_Contact__XPATH)
+        context.ele_ops.click(oR.Project_Contact__XPATH)
+        context.ele_ops.wait_until_element_present_visible(oR.Project_Contact_User__XPATH)
+        context.ele_ops.scroll_to_element(oR.Project_Contact_User__XPATH)
+        context.ele_ops.click(oR.Project_Contact_User__XPATH)
 
 @then('User select default task assignee "{default_task_assignee}"')
 def step_impl(context, default_task_assignee):
@@ -349,6 +367,7 @@ def step_impl(context, actual_material_cost):
 def step_impl(context, estimated_start_date):
     context.ele_ops = Element_Operations(context.driver)
     context.ele_ops.wait_until_element_present_visible(oR.Project_Estimated_Start_Date__ID)
+    context.ele_ops.wait_until_element_invisible_locator(oR.kha_overlay__ID)
     context.ele_ops.click(oR.Project_Estimated_Start_Date__ID)
     context.ele_ops.choose_date_from_jquery_calender(estimated_start_date, oR.date_picker_next__XPATH,
                                                      oR.date_picker_previous__XPATH)
@@ -360,6 +379,7 @@ def step_impl(context, estimated_start_date):
 def step_impl(context, estimated_end_date):
     context.ele_ops = Element_Operations(context.driver)
     context.ele_ops.wait_until_element_present_visible(oR.Project_Estimated_End_Date__ID)
+    context.ele_ops.wait_until_element_invisible_locator(oR.kha_overlay__ID)
     context.ele_ops.click(oR.Project_Estimated_End_Date__ID)
     context.ele_ops.choose_date_from_jquery_calender(estimated_end_date, oR.date_picker_next__XPATH,
                                                      oR.date_picker_previous__XPATH)
