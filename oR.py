@@ -73,6 +73,7 @@ new_Project__ID = "DivRibbonBarButton-105"
 idasdf__ID = "txtBudgetHourlyRate"
 idasdfg__ID = "txtProjectFixedCost"
 
+kha_overlay__ID = "CustomeMessage"
 New_Project_Creation_Div__ID = "DivProjectcreateNew"
 Project_Name_inbox__ID = "txtProjectName_Create"
 Project_Type_Dropdown__XPATH = "//select[@name='drpCreateProjectType']"
