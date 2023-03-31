@@ -308,6 +308,17 @@ class Element_Operations(Waits_Operations, Common_Operations, Driver_Operations)
             print(traceback.print_exc())
             assert False
 
+    def get_text_from_multiple_elements(self, locator):
+        try:
+            eles = self.find_elements(locator)
+            ele_text_list = [ele.text for ele in eles]
+            log.logger.info(f"{ele_text_list} element text is {ele_text_list}")
+            print(f"{eles} element text is {ele_text_list}")
+            return ele_text_list
+        except:
+            print(traceback.print_exc())
+            assert False
+
     # This function send keys to web element[input]
     def send_keys(self, locator, send_keys_value):
         try:

@@ -127,4 +127,8 @@ date_picker_previous__XPATH = "//a[@title='Prev']"
 
 information_pop_up__XPATH = "//a[@class='message-popup-btn ng-scope']"
 
-
+bible_frame__XPATH = "//body[1]/div[1]/table[1]/tbody[1]/tr[1]/td[1]/iframe[1]"
+bible_Menu_1_dropdown__XPATH = "//select[@name='select1']"
+bible_Menu_2_dropdown__XPATH = "//select[@name='select2']"
+bible_Hebrew__XPATH = "//a[@title='Hebrew Text Analysis']"
+bible_text_verse__XPATH = "//div[@id='combox']//div[@class='padcom']/span[@class='word']"

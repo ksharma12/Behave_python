@@ -28,7 +28,7 @@ $x("") - xpath locator (relative , partial , absolute)
 //tagName[contains(text(),'text_written')]
 
 * if there is space in the text then
-//tagName[normalize-space()='text_written')]
+//tagName[normalize-space()='text_written']
 
 
 # multiple attributes
