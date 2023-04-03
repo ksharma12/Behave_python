@@ -4,7 +4,7 @@ test_site_url = "https://www.way2automation.com/"
 implicit_wait = 10
 explicit_wait = 10
 fluent_wait = 0.01
-headless = False  # True
+headless = True  # True
 
 # [SEO_MARKETING] Locators
 email__ID = "txtEmailid"
@@ -132,3 +132,4 @@ bible_Menu_1_dropdown__XPATH = "//select[@name='select1']"
 bible_Menu_2_dropdown__XPATH = "//select[@name='select2']"
 bible_Hebrew__XPATH = "//a[@title='Hebrew Text Analysis']"
 bible_text_verse__XPATH = "//div[@id='combox']//div[@class='padcom']/span[@class='word']"
+top_heading__XPATH = "//div[@id='topheading']"
